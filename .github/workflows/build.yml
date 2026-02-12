@@ -1,0 +1,64 @@
+name: Build StemSlicer
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            artifact: StemSlicer-macOS
+          - os: windows-latest
+            artifact: StemSlicer-Windows
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ffmpeg (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ffmpeg
+
+      - name: Install ffmpeg (Windows)
+        if: runner.os == 'Windows'
+        run: choco install ffmpeg -y
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+
+      - name: Build with PyInstaller
+        run: pyinstaller StemSlicer.spec --clean --noconfirm
+
+      - name: Create macOS zip
+        if: runner.os == 'macOS'
+        run: |
+          cd dist
+          zip -r ../StemSlicer-macOS.zip StemSlicer.app
+
+      - name: Upload macOS artifact
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: StemSlicer-macOS
+          path: StemSlicer-macOS.zip
+
+      - name: Upload Windows artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: StemSlicer-Windows
+          path: dist/StemSlicer.exe
