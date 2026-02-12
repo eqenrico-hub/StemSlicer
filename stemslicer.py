@@ -20,6 +20,25 @@ import subprocess
 from pathlib import Path
 from datetime import timedelta
 
+# ── Bundled ffmpeg support ──
+# When frozen with PyInstaller, ffmpeg is bundled alongside the executable.
+# Tell pydub where to find it so the user never needs to install ffmpeg.
+def _setup_ffmpeg():
+    if getattr(sys, 'frozen', False):
+        # Running as PyInstaller bundle
+        bundle_dir = sys._MEIPASS if hasattr(sys, '_MEIPASS') else os.path.dirname(sys.executable)
+        # Check common locations PyInstaller might place binaries
+        for search_dir in [bundle_dir, os.path.dirname(sys.executable)]:
+            ffmpeg_name = "ffmpeg.exe" if platform.system() == "Windows" else "ffmpeg"
+            ffmpeg_path = os.path.join(search_dir, ffmpeg_name)
+            if os.path.isfile(ffmpeg_path):
+                os.environ["PATH"] = search_dir + os.pathsep + os.environ.get("PATH", "")
+                return
+    # Not frozen or ffmpeg not bundled — rely on system PATH
+    # We'll check later and show a user-friendly message if missing
+
+_setup_ffmpeg()
+
 from pydub import AudioSegment
 from pydub.silence import detect_nonsilent
 

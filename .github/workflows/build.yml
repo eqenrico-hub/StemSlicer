@@ -26,13 +26,29 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install ffmpeg (macOS)
+      - name: Download ffmpeg (macOS)
         if: runner.os == 'macOS'
-        run: brew install ffmpeg
+        run: |
+          brew install ffmpeg
+          # Copy ffmpeg binary to project dir so PyInstaller bundles it
+          cp $(which ffmpeg) ./ffmpeg
+          cp $(which ffprobe) ./ffprobe
+          chmod +x ./ffmpeg ./ffprobe
 
-      - name: Install ffmpeg (Windows)
+      - name: Download ffmpeg (Windows)
         if: runner.os == 'Windows'
-        run: choco install ffmpeg -y
+        shell: pwsh
+        run: |
+          # Download ffmpeg essentials build
+          $url = "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip"
+          Invoke-WebRequest -Uri $url -OutFile ffmpeg.zip
+          Expand-Archive -Path ffmpeg.zip -DestinationPath ffmpeg_extract
+          # Find and copy the binaries
+          $ffmpegExe = Get-ChildItem -Path ffmpeg_extract -Recurse -Filter "ffmpeg.exe" | Select-Object -First 1
+          $ffprobeExe = Get-ChildItem -Path ffmpeg_extract -Recurse -Filter "ffprobe.exe" | Select-Object -First 1
+          Copy-Item $ffmpegExe.FullName -Destination ./ffmpeg.exe
+          Copy-Item $ffprobeExe.FullName -Destination ./ffprobe.exe
+          Write-Output "ffmpeg.exe and ffprobe.exe copied to project root"
 
       - name: Install dependencies
         run: |

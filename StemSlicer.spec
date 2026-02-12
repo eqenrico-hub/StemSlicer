@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 """
 PyInstaller spec for StemSlicer — works on macOS and Windows.
+Bundles ffmpeg so the user doesn't need to install it separately.
 """
 
 import sys
@@ -8,10 +9,21 @@ import os
 
 block_cipher = None
 
+# ── Detect ffmpeg binaries to bundle ──
+ffmpeg_binaries = []
+if sys.platform == 'win32':
+    for name in ['ffmpeg.exe', 'ffprobe.exe']:
+        if os.path.isfile(name):
+            ffmpeg_binaries.append((name, '.'))
+elif sys.platform == 'darwin':
+    for name in ['ffmpeg', 'ffprobe']:
+        if os.path.isfile(name):
+            ffmpeg_binaries.append((name, '.'))
+
 a = Analysis(
     ['stemslicer.py'],
     pathex=[],
-    binaries=[],
+    binaries=ffmpeg_binaries,
     datas=[
         ('theme.py', '.'),
     ],
@@ -77,7 +89,7 @@ if sys.platform == 'darwin':
         },
     )
 else:
-    # Windows: single-file .exe
+    # Windows: single-file .exe with ffmpeg bundled inside
     exe = EXE(
         pyz,
         a.scripts,
