@@ -286,7 +286,7 @@ from PySide6.QtWidgets import (
     QLabel, QPushButton, QSlider, QListWidget, QListWidgetItem,
     QProgressBar, QRadioButton, QCheckBox, QFrame, QFileDialog,
     QMessageBox, QSizePolicy, QGraphicsDropShadowEffect, QButtonGroup,
-    QScrollArea, QAbstractItemView,
+    QAbstractItemView,
 )
 from PySide6.QtCore import (
     Qt, Signal, QObject, QThread, QTimer, QMimeData, QUrl, QSize,
@@ -334,8 +334,8 @@ class GlowPanel(QFrame):
         self.setGraphicsEffect(shadow)
 
         self._layout = QVBoxLayout(self)
-        self._layout.setContentsMargins(16, 14, 16, 14)
-        self._layout.setSpacing(10)
+        self._layout.setContentsMargins(12, 10, 12, 10)
+        self._layout.setSpacing(6)
 
         if title:
             heading = QLabel(title)
@@ -376,7 +376,7 @@ class SliderGroup(QWidget):
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(4)
+        layout.setSpacing(2)
 
         # Top row: label + value
         top_row = QHBoxLayout()
@@ -427,8 +427,8 @@ class FileListWidget(QListWidget):
         self.setAcceptDrops(True)
         self.setDragDropMode(QAbstractItemView.DragDropMode.DropOnly)
         self.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
-        self.setMinimumHeight(80)
-        self.setMaximumHeight(120)
+        self.setMinimumHeight(50)
+        self.setMaximumHeight(80)
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         if event.mimeData().hasUrls():
@@ -461,7 +461,7 @@ class WaveformWidget(QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setMinimumHeight(140)
+        self.setMinimumHeight(90)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
         self._peaks_left = None
@@ -755,8 +755,8 @@ class StemSlicerApp(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("StemSlicer")
-        self.resize(960, 780)
-        self.setMinimumSize(800, 650)
+        self.resize(780, 580)
+        self.setMinimumSize(640, 480)
         self.setAcceptDrops(True)
 
         self.input_files = []
@@ -795,16 +795,9 @@ class StemSlicerApp(QMainWindow):
         central = QWidget()
         self.setCentralWidget(central)
 
-        # Scroll area for small screens
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        scroll.setFrameShape(QFrame.Shape.NoFrame)
-        scroll.setStyleSheet("QScrollArea { background: transparent; border: none; }")
-
-        scroll_content = QWidget()
-        main_layout = QVBoxLayout(scroll_content)
-        main_layout.setContentsMargins(24, 0, 24, 20)
-        main_layout.setSpacing(12)
+        main_layout = QVBoxLayout(central)
+        main_layout.setContentsMargins(16, 0, 16, 12)
+        main_layout.setSpacing(6)
 
         # Accent bar
         accent = AccentBar()
@@ -812,7 +805,7 @@ class StemSlicerApp(QMainWindow):
 
         # Header
         header_layout = QHBoxLayout()
-        header_layout.setContentsMargins(0, 8, 0, 0)
+        header_layout.setContentsMargins(0, 4, 0, 0)
 
         title = QLabel("StemSlicer")
         title.setObjectName("title")
@@ -862,6 +855,7 @@ class StemSlicerApp(QMainWindow):
         self._file_list.currentRowChanged.connect(self._on_file_selected)
         inp_layout.addWidget(self._file_list)
 
+        input_panel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         main_layout.addWidget(input_panel)
 
         # ── DETECTION panel ──
@@ -893,6 +887,7 @@ class StemSlicerApp(QMainWindow):
         sliders_row.addWidget(self._pad_slider)
 
         det_layout.addLayout(sliders_row)
+        detect_panel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         main_layout.addWidget(detect_panel)
 
         # ── PREVIEW panel ──
@@ -956,19 +951,14 @@ class StemSlicerApp(QMainWindow):
         self._process_btn = QPushButton("PROCESS STEMS")
         self._process_btn.setObjectName("processBtn")
         self._process_btn.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
-        self._process_btn.setFixedHeight(44)
-        self._process_btn.setMinimumWidth(180)
+        self._process_btn.setFixedHeight(36)
+        self._process_btn.setMinimumWidth(160)
         self._process_btn.clicked.connect(self._start_processing)
         bottom_row.addWidget(self._process_btn)
 
         out_layout.addLayout(bottom_row)
+        output_panel.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
         main_layout.addWidget(output_panel)
-
-        scroll.setWidget(scroll_content)
-
-        outer_layout = QVBoxLayout(central)
-        outer_layout.setContentsMargins(0, 0, 0, 0)
-        outer_layout.addWidget(scroll)
 
     # ── Window-level drag-and-drop ──
 
