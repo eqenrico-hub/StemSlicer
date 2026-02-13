@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanks for your purchase! — StemSlicer</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230D0F14'/><rect x='4' y='8' width='3' height='16' rx='1.5' fill='%2300E5CC'/><rect x='10' y='5' width='3' height='22' rx='1.5' fill='%2300E5CC' opacity='.7'/><rect x='16' y='10' width='3' height='12' rx='1.5' fill='%2300E5CC' opacity='.5'/><rect x='22' y='6' width='3' height='20' rx='1.5' fill='%2300E5CC' opacity='.8'/><line x1='1' y1='16' x2='31' y2='16' stroke='%23FF4757' stroke-width='1.5' stroke-dasharray='3 2'/></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0D0F14;
+      color: #e6e6e6;
+      font-family: 'Inter', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .card {
+      max-width: 520px;
+      width: 100%;
+      background: #151921;
+      border: 1px solid rgba(0,229,204,0.15);
+      border-radius: 16px;
+      padding: 48px 36px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00E5CC, #6C63FF);
+    }
+
+    .check {
+      width: 64px;
+      height: 64px;
+      background: rgba(0,229,204,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    p {
+      color: #808080;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .highlight {
+      background: rgba(0,229,204,0.08);
+      border: 1px solid rgba(0,229,204,0.15);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .highlight h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #00E5CC;
+      margin-bottom: 10px;
+    }
+
+    .highlight p {
+      font-size: 14px;
+      color: #a0a0a0;
+      margin-bottom: 8px;
+    }
+
+    .highlight p:last-child { margin-bottom: 0; }
+
+    a {
+      color: #00E5CC;
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 24px;
+      color: #555;
+      font-size: 13px;
+    }
+
+    .back-link:hover { color: #00E5CC; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="check">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00E5CC" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+
+    <h1>Thank you!</h1>
+    <p>Your payment has been received.</p>
+
+    <div class="highlight">
+      <h3>What happens next</h3>
+      <p>You'll receive StemSlicer (macOS + Windows) at the <strong style="color:#e6e6e6;">email address linked to your PayPal account</strong> within 24 hours.</p>
+      <p>If you need it sent to a different email, just let me know.</p>
+    </div>
+
+    <p>Questions or issues? Reach out anytime:</p>
+    <p><a href="mailto:eq.enrico@gmail.com">eq.enrico@gmail.com</a></p>
+
+    <a href="index.html" class="back-link">&larr; Back to StemSlicer</a>
+  </div>
+
+</body>
+</html>

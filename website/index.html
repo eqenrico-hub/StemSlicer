@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StemSlicer — Silence Detection & Multi-DAW Stem Export</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230D0F14'/><rect x='4' y='8' width='3' height='16' rx='1.5' fill='%2300E5CC'/><rect x='10' y='5' width='3' height='22' rx='1.5' fill='%2300E5CC' opacity='.7'/><rect x='16' y='10' width='3' height='12' rx='1.5' fill='%2300E5CC' opacity='.5'/><rect x='22' y='6' width='3' height='20' rx='1.5' fill='%2300E5CC' opacity='.8'/><line x1='1' y1='16' x2='31' y2='16' stroke='%23FF4757' stroke-width='1.5' stroke-dasharray='3 2'/></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0D0F14;
+      color: #e6e6e6;
+      font-family: 'Inter', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 24px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo svg { flex-shrink: 0; }
+
+    .logo span {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    nav a.nav-link {
+      color: #808080;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .2s;
+    }
+
+    nav a.nav-link:hover { color: #00E5CC; }
+
+    .nav-buy {
+      background: #00E5CC;
+      color: #0D0F14;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .nav-buy:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,229,204,0.3);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -1px;
+    }
+
+    .hero h1 .accent { color: #00E5CC; }
+
+    .hero p.sub {
+      font-size: 18px;
+      color: #808080;
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .badge {
+      background: #151921;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 13px;
+      color: #a0a0a0;
+    }
+
+    .badge strong { color: #00E5CC; font-weight: 600; }
+
+    /* ── APP PREVIEW ── */
+    .app-preview {
+      max-width: 760px;
+      margin: 0 auto 60px;
+      background: #151921;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .app-preview::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00E5CC, transparent);
+    }
+
+    .waveform-canvas {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      display: block;
+    }
+
+    .app-preview p {
+      text-align: center;
+      color: #808080;
+      font-size: 14px;
+    }
+
+    .app-preview p strong { color: #e6e6e6; }
+
+    /* ── FEATURES ── */
+    .features {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 48px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: #151921;
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 28px 24px;
+    }
+
+    .feature-card .icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(0,229,204,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: #808080;
+      line-height: 1.5;
+    }
+
+    /* ── DAW COMPAT ── */
+    .daw-section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      text-align: center;
+    }
+
+    .daw-section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .daw-section p.sub {
+      color: #808080;
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    .daw-list {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .daw-chip {
+      background: #151921;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 14px 22px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #e6e6e6;
+    }
+
+    .daw-chip .format {
+      display: block;
+      font-size: 11px;
+      color: #00E5CC;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ── PRICING ── */
+    .pricing {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      text-align: center;
+    }
+
+    .pricing h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .pricing p.sub {
+      color: #808080;
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    .price-card {
+      background: #151921;
+      border: 1px solid rgba(0,229,204,0.2);
+      border-radius: 16px;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .price-card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #00E5CC, #6C63FF);
+    }
+
+    .price-amount {
+      font-size: 56px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .price-amount .currency {
+      font-size: 28px;
+      vertical-align: super;
+      color: #00E5CC;
+    }
+
+    .price-label {
+      color: #808080;
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .price-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 32px;
+    }
+
+    .price-features li {
+      padding: 8px 0;
+      font-size: 14px;
+      color: #a0a0a0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .price-features li::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      background: rgba(0,229,204,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300E5CC'%3E%3Cpath d='M6.5 11.5l-3-3 1-1 2 2 5-5 1 1z'/%3E%3C/svg%3E");
+      background-size: 14px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .buy-btn {
+      display: inline-block;
+      width: 100%;
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #00E5CC, #00B8A3);
+      color: #0D0F14;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,229,204,0.25);
+    }
+
+    .buy-btn:active { transform: translateY(0); }
+
+    .payment-note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .payment-note svg { vertical-align: middle; margin-right: 4px; }
+
+    /* ── HOW IT WORKS ── */
+    .how-it-works {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      text-align: center;
+    }
+
+    .how-it-works h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 40px;
+    }
+
+    .steps {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      flex: 1;
+      min-width: 200px;
+      max-width: 280px;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: rgba(0,229,204,0.1);
+      border: 1px solid rgba(0,229,204,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 12px;
+      font-weight: 700;
+      color: #00E5CC;
+      font-size: 15px;
+    }
+
+    .step h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .step p {
+      font-size: 13px;
+      color: #808080;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+      color: #555;
+      font-size: 13px;
+    }
+
+    footer a { color: #00E5CC; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 40px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .price-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="logo">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="36" height="36" rx="8" fill="#151921"/>
+        <rect x="5" y="9" width="3.5" height="18" rx="1.75" fill="#00E5CC"/>
+        <rect x="11.5" y="5" width="3.5" height="26" rx="1.75" fill="#00E5CC" opacity=".7"/>
+        <rect x="18" y="11" width="3.5" height="14" rx="1.75" fill="#00E5CC" opacity=".5"/>
+        <rect x="24.5" y="7" width="3.5" height="22" rx="1.75" fill="#00E5CC" opacity=".8"/>
+        <line x1="1" y1="18" x2="35" y2="18" stroke="#FF4757" stroke-width="1.5" stroke-dasharray="3 2"/>
+      </svg>
+      <span>StemSlicer</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <a href="#buy" class="nav-buy">Buy Now — €5</a>
+      <a href="mailto:eq.enrico@gmail.com" class="nav-link">Contact</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Slice the silence.<br><span class="accent">Start mixing.</span></h1>
+    <p class="sub">
+      Detect silence, slice stems into clean clips, and export to Pro Tools, Logic, Cubase, REAPER, Bitwig, and more. Every DAW. Zero hassle.
+    </p>
+    <div class="badge-row">
+      <span class="badge"><strong>macOS</strong> &amp; Windows</span>
+      <span class="badge">WAV, MP3, FLAC, OGG, AIF, M4A</span>
+      <span class="badge"><strong>6 DAWs</strong> supported</span>
+    </div>
+  </section>
+
+  <!-- APP PREVIEW -->
+  <div class="app-preview">
+    <canvas class="waveform-canvas" id="waveform"></canvas>
+    <p>
+      <strong>Drag stems in, get clean clips out.</strong><br>
+      Automatic silence detection with real-time waveform preview.
+    </p>
+  </div>
+
+  <script>
+    (() => {
+      const c = document.getElementById('waveform');
+      const ctx = c.getContext('2d');
+      const dpr = window.devicePixelRatio || 1;
+      const W = c.offsetWidth;
+      const H = c.offsetHeight;
+      c.width = W * dpr;
+      c.height = H * dpr;
+      ctx.scale(dpr, dpr);
+
+      // Audio regions: [startX%, endX%] — gaps between = silence
+      const regions = [
+        [0.00, 0.18],
+        [0.22, 0.42],
+        [0.48, 0.58],
+        [0.63, 0.85],
+        [0.90, 1.00],
+      ];
+
+      // Seeded random for consistent look
+      let seed = 42;
+      function rand() { seed = (seed * 16807 + 0) % 2147483647; return (seed - 1) / 2147483646; }
+
+      function isInRegion(x) {
+        const pct = x / W;
+        for (const [s, e] of regions) { if (pct >= s && pct <= e) return true; }
+        return false;
+      }
+
+      // Region boundaries for slice markers
+      const sliceXs = [];
+      for (const [s, e] of regions) {
+        sliceXs.push(s * W);
+        sliceXs.push(e * W);
+      }
+
+      function draw(t) {
+        ctx.clearRect(0, 0, W, H);
+        const mid = H / 2;
+
+        // Draw waveform — bar by bar
+        const barW = 2;
+        const gap = 1;
+        seed = 42; // reset each frame for consistency
+
+        for (let x = 0; x < W; x += barW + gap) {
+          const inRegion = isInRegion(x);
+          const r = rand();
+
+          let amp;
+          if (!inRegion) {
+            // Silence — tiny noise floor
+            amp = r * 3;
+          } else {
+            // Audio — vary amplitude naturally
+            const pct = x / W;
+            // Envelope: louder in middle of each region
+            let envRegion = 0;
+            for (const [s, e] of regions) {
+              if (pct >= s && pct <= e) {
+                const regionMid = (s + e) / 2;
+                const regionHalf = (e - s) / 2;
+                envRegion = 1 - Math.pow((pct - regionMid) / regionHalf, 2) * 0.5;
+                break;
+              }
+            }
+            amp = (0.3 + r * 0.7) * envRegion * (mid - 6);
+            // Subtle animation
+            amp *= 0.92 + 0.08 * Math.sin(t * 0.001 + x * 0.05);
+          }
+
+          if (inRegion) {
+            ctx.fillStyle = 'rgba(0, 229, 204, 0.85)';
+          } else {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+          }
+
+          // Draw mirrored bar (top + bottom from center)
+          ctx.fillRect(x, mid - amp, barW, amp * 2 || 1);
+        }
+
+        // Draw red slice markers at region boundaries
+        ctx.setLineDash([4, 3]);
+        ctx.strokeStyle = 'rgba(255, 71, 87, 0.5)';
+        ctx.lineWidth = 1;
+        for (const sx of sliceXs) {
+          if (sx > 2 && sx < W - 2) {
+            ctx.beginPath();
+            ctx.moveTo(sx, 4);
+            ctx.lineTo(sx, H - 4);
+            ctx.stroke();
+          }
+        }
+        ctx.setLineDash([]);
+
+        // Center line
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, mid);
+        ctx.lineTo(W, mid);
+        ctx.stroke();
+
+        requestAnimationFrame(draw);
+      }
+
+      requestAnimationFrame(draw);
+    })();
+  </script>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <h2>What it does</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon">&#x1F50A;</div>
+        <h3>Smart Silence Detection</h3>
+        <p>Configurable threshold, minimum silence duration, and padding. Real-time preview shows exactly where clips will be cut.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#x1F3B5;</div>
+        <h3>Multi-DAW Export</h3>
+        <p>REAPER (.rpp), AAF (Pro Tools, Logic, Cubase, Nuendo), and DAWProject (Bitwig, Studio One). All clips pre-placed on the timeline.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#x2702;&#xFE0F;</div>
+        <h3>Clean Outputs</h3>
+        <p><strong>One WAV per stem</strong> — drag into any DAW, done. Optionally also export <strong>raw clips</strong> (audio only, no silence) for sampling.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#x1F3A8;</div>
+        <h3>Auto Track Colors</h3>
+        <p>When you open the exported project, tracks are already color-coded — kicks are red, vocals pink, bass blue, and so on. Detected from filenames. <em style="color:#606060;">(Supported in REAPER, Bitwig, and Studio One)</em></p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#x1F4C1;</div>
+        <h3>Batch Processing</h3>
+        <p>Drop an entire session worth of stems at once. StemSlicer processes them all and organizes output per-stem.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">&#x26A1;</div>
+        <h3>Lightweight &amp; Fast</h3>
+        <p>No browser, no Electron, no subscription. Native desktop app that launches instantly and processes audio at full speed.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAW COMPATIBILITY -->
+  <section class="daw-section">
+    <h2>Works with every major DAW</h2>
+    <p class="sub">Export once, open anywhere. Your mixer uses Pro Tools? Your masterer uses REAPER? No problem.</p>
+    <div class="daw-list">
+      <div class="daw-chip">REAPER<span class="format">.rpp project</span></div>
+      <div class="daw-chip">Pro Tools<span class="format">AAF</span></div>
+      <div class="daw-chip">Logic Pro<span class="format">AAF</span></div>
+      <div class="daw-chip">Cubase / Nuendo<span class="format">AAF</span></div>
+      <div class="daw-chip">Bitwig Studio<span class="format">.dawproject</span></div>
+      <div class="daw-chip">Studio One<span class="format">.dawproject</span></div>
+      <div class="daw-chip">FL Studio<span class="format">One WAV per stem</span></div>
+      <div class="daw-chip">Ableton Live<span class="format">One WAV per stem</span></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="buy">
+    <h2>Get StemSlicer</h2>
+    <p class="sub">One-time purchase. No subscription. Free updates.</p>
+    <div class="price-card">
+      <div class="price-amount"><span class="currency">&euro;</span>5</div>
+      <div class="price-label">one-time &mdash; yours forever</div>
+      <ul class="price-features">
+        <li>macOS + Windows</li>
+        <li>All DAW export formats</li>
+        <li>Batch processing</li>
+        <li>Free updates</li>
+        <li>No subscription, no account needed</li>
+      </ul>
+
+      <!-- PayPal Buy Now -->
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="eq.enrico@gmail.com">
+        <input type="hidden" name="item_name" value="StemSlicer — Desktop License">
+        <input type="hidden" name="amount" value="5.00">
+        <input type="hidden" name="currency_code" value="EUR">
+        <input type="hidden" name="return" value="thanks.html">
+        <input type="hidden" name="no_shipping" value="1">
+        <button type="submit" class="buy-btn">Buy Now &mdash; &euro;5</button>
+      </form>
+
+      <p class="payment-note">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#555"><path d="M12 1a11 11 0 1 0 0 22 11 11 0 0 0 0-22zm1 17h-2v-2h2v2zm0-4h-2V7h2v7z"/></svg>
+        Secure payment via PayPal. After purchase, you'll receive StemSlicer at your PayPal email within 24h.
+      </p>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-it-works">
+    <h2>How to get started</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Purchase</h3>
+        <p>Click Buy Now and complete payment via PayPal.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Receive</h3>
+        <p>You'll get StemSlicer sent to your PayPal email within 24 hours.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Slice</h3>
+        <p>Drop your stems in, configure detection, export to any DAW. Done.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>StemSlicer &copy; 2026 &mdash; Built for producers, by a producer.</p>
+    <p style="margin-top:8px;">Questions? <a href="mailto:eq.enrico@gmail.com">eq.enrico@gmail.com</a></p>
+  </footer>
+
+</body>
+</html>

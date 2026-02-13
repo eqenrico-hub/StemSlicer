@@ -30,6 +30,7 @@ a = Analysis(
     hiddenimports=[
         'pydub',
         'audioop_lts',
+        'aaf2',
         'PySide6.QtWidgets',
         'PySide6.QtCore',
         'PySide6.QtGui',

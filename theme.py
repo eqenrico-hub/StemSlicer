@@ -27,13 +27,13 @@ class Colors:
 class Fonts:
     FAMILY = "Inter"
     FALLBACK = "Segoe UI, Helvetica Neue, Arial, sans-serif"
-    TITLE_SIZE = 26
-    SUBTITLE_SIZE = 12
-    HEADING_SIZE = 11
-    BODY_SIZE = 12
-    SMALL_SIZE = 10
-    BUTTON_SIZE = 12
-    PROCESS_BUTTON_SIZE = 14
+    TITLE_SIZE = 20
+    SUBTITLE_SIZE = 11
+    HEADING_SIZE = 10
+    BODY_SIZE = 11
+    SMALL_SIZE = 9
+    BUTTON_SIZE = 11
+    PROCESS_BUTTON_SIZE = 12
 
 
 def get_stylesheet():
@@ -105,8 +105,8 @@ def get_stylesheet():
         background-color: transparent;
         color: {Colors.ACCENT};
         border: 1px solid {Colors.ACCENT};
-        border-radius: 6px;
-        padding: 7px 18px;
+        border-radius: 5px;
+        padding: 5px 14px;
         font-size: {Fonts.BUTTON_SIZE}px;
         font-weight: 600;
     }}
@@ -137,8 +137,8 @@ def get_stylesheet():
             stop:0 {Colors.ACCENT}, stop:1 {Colors.ACCENT_DIM});
         color: #0D0F14;
         border: none;
-        border-radius: 8px;
-        padding: 12px 32px;
+        border-radius: 6px;
+        padding: 8px 24px;
         font-size: {Fonts.PROCESS_BUTTON_SIZE}px;
         font-weight: 700;
     }}
@@ -197,8 +197,8 @@ def get_stylesheet():
 
     QListWidget::item {{
         color: {Colors.TEXT_SOLID};
-        padding: 5px 8px;
-        border-radius: 4px;
+        padding: 3px 6px;
+        border-radius: 3px;
     }}
 
     QListWidget::item:selected {{
@@ -207,6 +207,30 @@ def get_stylesheet():
     }}
 
     QListWidget::item:hover {{
+        background-color: rgba(0, 229, 204, 0.07);
+    }}
+
+    /* ── Places Widget ── */
+    #placesWidget {{
+        background-color: {Colors.WAVEFORM_BG};
+        border: 1px solid {Colors.BORDER_SOLID};
+        border-radius: 6px;
+        padding: 4px;
+        outline: none;
+    }}
+
+    #placesWidget::item {{
+        color: {Colors.TEXT_SOLID};
+        padding: 4px 6px;
+        border-radius: 3px;
+    }}
+
+    #placesWidget::item:selected {{
+        background-color: rgba(0, 229, 204, 0.15);
+        color: {Colors.ACCENT};
+    }}
+
+    #placesWidget::item:hover {{
         background-color: rgba(0, 229, 204, 0.07);
     }}
 
@@ -331,5 +355,14 @@ def get_stylesheet():
         border-radius: 4px;
         padding: 6px 10px;
         font-size: {Fonts.SMALL_SIZE}px;
+    }}
+
+    /* ── Info Bar (Ableton-style) ── */
+    #infoBar {{
+        color: {Colors.TEXT_MUTED_SOLID};
+        font-size: {Fonts.SMALL_SIZE}px;
+        padding: 2px 4px;
+        background: transparent;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
     }}
     """
