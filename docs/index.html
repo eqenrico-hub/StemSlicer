@@ -86,6 +86,11 @@
 
     nav a.nav-link:hover { color: #00E5CC; }
 
+    .nav-ig { display: flex; align-items: center; transition: transform .15s; }
+    .nav-ig:hover { transform: scale(1.15); }
+    .nav-ig:hover svg rect, .nav-ig:hover svg circle { stroke: #00E5CC; fill: none; }
+    .nav-ig:hover svg circle:last-child { stroke: none; fill: #00E5CC; }
+
     .nav-buy {
       background: #00E5CC;
       color: #0D0F14;
@@ -185,6 +190,47 @@
     }
 
     .app-preview p strong { color: #e6e6e6; }
+
+    /* ── VIDEO DEMO ── */
+    .video-demo {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      text-align: center;
+    }
+
+    .video-demo h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 24px;
+    }
+
+    .video-wrap {
+      background: #151921;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .video-wrap::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #00E5CC, transparent);
+      z-index: 1;
+    }
+
+    .video-wrap video {
+      width: 100%;
+      display: block;
+      border-radius: 16px;
+    }
 
     /* ── FEATURES ── */
     .features {
@@ -499,10 +545,19 @@
       .badge-row { gap: 6px; margin-bottom: 24px; }
       .badge { padding: 4px 10px; font-size: 11px; }
 
+      /* IG icon: smaller on mobile */
+      .nav-ig svg { width: 18px; height: 18px; }
+
       /* App preview: compact */
       .app-preview { padding: 20px 16px; margin: 0 auto 36px; border-radius: 12px; }
       .waveform-canvas { height: 60px; margin-bottom: 12px; }
       .app-preview p { font-size: 12px; }
+
+      /* Video demo: compact */
+      .video-demo { padding: 0 16px 36px; }
+      .video-demo h2 { font-size: 20px; margin-bottom: 16px; }
+      .video-wrap { border-radius: 12px; }
+      .video-wrap video { border-radius: 12px; }
 
       /* Features: 2 per row, compact cards */
       .features { padding: 0 16px 48px; }
@@ -562,6 +617,13 @@
     <div class="nav-right">
       <a href="#buy" class="nav-buy">Buy Now — €5</a>
       <a href="mailto:eq.enrico@gmail.com" class="nav-link">Contact</a>
+      <a href="https://www.instagram.com/stemslicer" target="_blank" rel="noopener" class="nav-ig" aria-label="Instagram">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="#808080" stroke-width="2"/>
+          <circle cx="12" cy="12" r="5" stroke="#808080" stroke-width="2"/>
+          <circle cx="17.5" cy="6.5" r="1.5" fill="#808080"/>
+        </svg>
+      </a>
     </div>
   </nav>
 
@@ -697,6 +759,17 @@
       requestAnimationFrame(draw);
     })();
   </script>
+
+  <!-- VIDEO DEMO -->
+  <section class="video-demo">
+    <h2>See it in action</h2>
+    <div class="video-wrap">
+      <video controls playsinline preload="metadata" poster="">
+        <source src="demo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </section>
 
   <!-- FEATURES -->
   <section class="features">
