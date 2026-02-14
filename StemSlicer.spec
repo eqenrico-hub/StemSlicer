@@ -82,10 +82,12 @@ if sys.platform == 'darwin':
     app = BUNDLE(
         coll,
         name='StemSlicer.app',
+        icon='StemSlicer.icns',
         bundle_identifier='com.stemslicer.app',
         info_plist={
             'CFBundleShortVersionString': '2.0.0',
             'CFBundleName': 'StemSlicer',
+            'CFBundleIconFile': 'StemSlicer.icns',
             'NSHighResolutionCapable': True,
         },
     )
@@ -111,5 +113,5 @@ else:
         target_arch=None,
         codesign_identity=None,
         entitlements_file=None,
-        icon=None,
+        icon='StemSlicer.ico',
     )

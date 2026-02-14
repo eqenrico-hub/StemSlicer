@@ -2072,7 +2072,7 @@ class StemSlicerApp(QMainWindow):
         exports_row.addWidget(exports_label)
 
         always_label = QLabel("One WAV per stem (always included)")
-        always_label.setStyleSheet(f"color: {Colors.TEXT_DIM};")
+        always_label.setStyleSheet(f"color: {Colors.TEXT_MUTED};")
         exports_row.addWidget(always_label)
 
         self._raw_clips_check = QCheckBox("+ Raw clips (audio only, no silence)")
