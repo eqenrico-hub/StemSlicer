@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0D0F14"/>
+  <!-- Waveform bars -->
+  <rect x="80" y="180" width="40" height="270" rx="20" fill="#00E5CC"/>
+  <rect x="150" y="120" width="40" height="390" rx="20" fill="#00E5CC" opacity=".7"/>
+  <rect x="220" y="220" width="40" height="190" rx="20" fill="#00E5CC" opacity=".5"/>
+  <rect x="290" y="140" width="40" height="350" rx="20" fill="#00E5CC" opacity=".8"/>
+  <rect x="360" y="200" width="40" height="230" rx="20" fill="#00E5CC" opacity=".6"/>
+  <rect x="430" y="160" width="40" height="310" rx="20" fill="#00E5CC" opacity=".75"/>
+  <!-- Threshold line -->
+  <line x1="60" y1="315" x2="490" y2="315" stroke="#FF4757" stroke-width="3" stroke-dasharray="8 5"/>
+  <!-- Text -->
+  <text x="560" y="280" font-family="Inter, -apple-system, Helvetica, Arial, sans-serif" font-size="72" font-weight="800" fill="#FFFFFF">StemSlicer</text>
+  <text x="560" y="340" font-family="Inter, -apple-system, Helvetica, Arial, sans-serif" font-size="28" fill="#A0A0A0">Silence Detection &amp; Multi-DAW Export</text>
+  <text x="560" y="410" font-family="Inter, -apple-system, Helvetica, Arial, sans-serif" font-size="22" fill="#00E5CC">REAPER  ·  Pro Tools  ·  Logic  ·  Cubase  ·  Bitwig  ·  Ableton  ·  FL Studio</text>
+</svg>
