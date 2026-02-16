@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>StemSlicer — Silence Detection & Multi-DAW Stem Export</title>
-  <meta name="description" content="StemSlicer detects silence in your stems and exports ready-to-open project files for REAPER, Pro Tools, Logic, Cubase, Bitwig, and Studio One. Color-coded tracks, clips on the timeline.">
+  <meta name="description" content="StemSlicer — desktop stem silence detection and removal tool for music producers. Export ready-to-open project files for REAPER, Pro Tools, Logic Pro, Cubase, Bitwig, and Studio One. Strip silence from audio stems, auto color-code tracks, batch process entire sessions. €5 one-time, macOS & Windows.">
   <meta name="keywords" content="stem slicer, silence detection, strip silence, DAW export, REAPER, Pro Tools, Logic Pro, Cubase, Ableton, FL Studio, Bitwig, Studio One, audio stems, music production">
   <meta property="og:title" content="StemSlicer — Silence Detection & Multi-DAW Stem Export">
   <meta property="og:description" content="Drop your stems, detect silence, export project files for REAPER, Pro Tools, Logic, Cubase, Bitwig, Studio One. Clips on the timeline in seconds.">
@@ -28,9 +28,64 @@
     "offers": {
       "@type": "Offer",
       "price": "5.00",
-      "priceCurrency": "EUR"
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock"
     },
-    "url": "https://stemslicer.com"
+    "url": "https://stemslicer.com",
+    "screenshot": "https://stemslicer.com/og-image.png",
+    "softwareVersion": "2.0",
+    "author": {
+      "@type": "Organization",
+      "name": "StemSlicer"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is StemSlicer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StemSlicer is a desktop application for music producers that detects silence in audio stems and exports ready-to-open project files for REAPER, Pro Tools, Logic Pro, Cubase, Bitwig Studio, and Studio One. It automatically places clips on the timeline with color-coded tracks."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What DAWs does StemSlicer support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StemSlicer exports project files for REAPER (.rpp), Pro Tools (AAF), Logic Pro (AAF), Cubase/Nuendo (AAF), Bitwig Studio (.dawproject), and Studio One (.dawproject). It also exports clean WAV files that work in FL Studio, Ableton Live, and any other DAW."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How much does StemSlicer cost?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StemSlicer costs \u20ac5 one-time. No subscription, no account required. You get macOS and Windows versions, all DAW export formats, batch processing, and free updates forever."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What audio formats does StemSlicer accept?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "StemSlicer accepts WAV, MP3, FLAC, OGG, AIF/AIFF, and M4A audio files. You can drag and drop multiple stems at once for batch processing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is StemSlicer different from strip silence in my DAW?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Unlike built-in strip silence, StemSlicer works across DAWs. Process stems once and export project files for any DAW your collaborators use. It also adds automatic track colors, handles batch processing of entire sessions, and creates properly organized project files ready to mix."
+        }
+      }
+    ]
   }
   </script>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230D0F14'/><rect x='4' y='8' width='3' height='16' rx='1.5' fill='%2300E5CC'/><rect x='10' y='5' width='3' height='22' rx='1.5' fill='%2300E5CC' opacity='.7'/><rect x='16' y='10' width='3' height='12' rx='1.5' fill='%2300E5CC' opacity='.5'/><rect x='22' y='6' width='3' height='20' rx='1.5' fill='%2300E5CC' opacity='.8'/><line x1='1' y1='16' x2='31' y2='16' stroke='%23FF4757' stroke-width='1.5' stroke-dasharray='3 2'/></svg>">
@@ -507,6 +562,74 @@
       color: #808080;
     }
 
+    /* ── FAQ ── */
+    .faq {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+    }
+
+    .faq h2 {
+      text-align: center;
+      font-size: 28px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 32px;
+    }
+
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .faq-list details {
+      background: #151921;
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .faq-list summary {
+      padding: 18px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #e6e6e6;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .faq-list summary::-webkit-details-marker { display: none; }
+
+    .faq-list summary::after {
+      content: '+';
+      font-size: 20px;
+      color: #00E5CC;
+      font-weight: 400;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+
+    .faq-list details[open] summary::after { content: '−'; }
+
+    .faq-list details[open] summary { border-bottom: 1px solid rgba(255,255,255,0.04); }
+
+    .faq-list details p {
+      padding: 16px 24px 20px;
+      font-size: 14px;
+      color: #808080;
+      line-height: 1.6;
+    }
+
+    .faq-list details p strong { color: #a0a0a0; }
+    .faq-list details p em { color: #606060; }
+
+    @media (max-width: 600px) {
+      .faq { padding: 0 16px 48px; }
+      .faq h2 { font-size: 20px; margin-bottom: 20px; }
+      .faq-list summary { padding: 14px 16px; font-size: 13px; }
+      .faq-list details p { padding: 12px 16px 16px; font-size: 12px; }
+    }
+
     /* ── FOOTER ── */
     footer {
       max-width: 960px;
@@ -880,6 +1003,41 @@
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <details open>
+        <summary>What is StemSlicer and who is it for?</summary>
+        <p>StemSlicer is a desktop silence detection and stem export tool built for music producers, mixing engineers, and mastering engineers. If you receive stems with long silences between parts, StemSlicer automatically detects those gaps, chops the audio into clean clips, and exports a ready-to-open project file for your DAW. No more manually trimming silence from dozens of stems.</p>
+      </details>
+      <details>
+        <summary>What DAWs are supported?</summary>
+        <p>StemSlicer exports native project files for <strong>REAPER</strong> (.rpp), <strong>Pro Tools</strong> (AAF), <strong>Logic Pro</strong> (AAF), <strong>Cubase / Nuendo</strong> (AAF), <strong>Bitwig Studio</strong> (.dawproject), and <strong>Studio One</strong> (.dawproject). For <strong>FL Studio</strong> and <strong>Ableton Live</strong>, it exports one clean WAV per stem that you can drag directly into your session. Tracks are automatically color-coded in REAPER, Bitwig, and Studio One.</p>
+      </details>
+      <details>
+        <summary>How is this different from "strip silence" in my DAW?</summary>
+        <p>Built-in strip silence only works inside one DAW. StemSlicer works <em>across</em> DAWs — process your stems once and export project files for any DAW your collaborators use. It also handles batch processing of entire sessions, adds automatic track colors based on stem names (kicks = red, vocals = pink, etc.), and creates properly organized project files ready to mix. One tool, every DAW.</p>
+      </details>
+      <details>
+        <summary>What audio file formats are supported?</summary>
+        <p>StemSlicer accepts <strong>WAV, MP3, FLAC, OGG, AIF/AIFF, and M4A</strong>. You can drag and drop an entire folder of stems and it will process them all at once.</p>
+      </details>
+      <details>
+        <summary>Does it work on macOS and Windows?</summary>
+        <p>Yes. When you purchase StemSlicer, you get both the macOS and Windows versions. It runs natively — no browser, no Electron, no subscription, no internet connection required.</p>
+      </details>
+      <details>
+        <summary>Is there a subscription?</summary>
+        <p>No. StemSlicer is a one-time purchase of €5. You own it forever with free updates. No account needed, no recurring charges.</p>
+      </details>
+      <details>
+        <summary>How do I receive it after purchase?</summary>
+        <p>After paying via PayPal, you'll receive StemSlicer at the email address linked to your PayPal account within 24 hours. If you need it sent to a different email, just reach out.</p>
+      </details>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <p>StemSlicer &copy; 2026 &mdash; Built for producers, by a producer.</p>
@@ -892,14 +1050,8 @@
   <script data-goatcounter="https://stemslicer.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
 
-  <!-- Google Analytics (GA4) — replace G-XXXXXXXXXX with your Measurement ID -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
+  <!-- Google Analytics: add your GA4 Measurement ID when ready -->
+  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
 
 </body>
 </html>
