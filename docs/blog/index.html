@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StemSlicer Blog — Guides for Music Producers & Mixing Engineers</title>
+  <meta name="description" content="Guides and tips for music producers and mixing engineers. Learn about stem preparation, silence detection, DAW project export, batch processing, and track organization.">
+  <meta property="og:title" content="StemSlicer Blog — Guides for Music Producers">
+  <meta property="og:description" content="Guides and tips on stem preparation, silence detection, DAW export, and mixing workflow.">
+  <meta property="og:url" content="https://stemslicer.com/blog/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://stemslicer.com/og-image.png">
+  <meta property="og:site_name" content="StemSlicer">
+  <link rel="canonical" href="https://stemslicer.com/blog/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%230D0F14'/><rect x='4' y='8' width='3' height='16' rx='1.5' fill='%2300E5CC'/><rect x='10' y='5' width='3' height='22' rx='1.5' fill='%2300E5CC' opacity='.7'/><rect x='16' y='10' width='3' height='12' rx='1.5' fill='%2300E5CC' opacity='.5'/><rect x='22' y='6' width='3' height='20' rx='1.5' fill='%2300E5CC' opacity='.8'/><line x1='1' y1='16' x2='31' y2='16' stroke='%23FF4757' stroke-width='1.5' stroke-dasharray='3 2'/></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0D0F14;
+      color: #e6e6e6;
+      font-family: 'Inter', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 960px; margin: 0 auto; padding: 24px 24px 0;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; }
+    .logo svg { flex-shrink: 0; }
+    .logo span { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    nav a.nav-link { color: #808080; text-decoration: none; font-size: 14px; transition: color .2s; }
+    nav a.nav-link:hover { color: #00E5CC; }
+    .nav-buy {
+      background: #00E5CC; color: #0D0F14; padding: 8px 18px; border-radius: 8px;
+      font-size: 14px; font-weight: 700; text-decoration: none; transition: transform .15s, box-shadow .15s;
+    }
+    .nav-buy:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,229,204,0.3); }
+
+    .hero {
+      max-width: 760px; margin: 0 auto; padding: 60px 24px 40px; text-align: center;
+    }
+    .hero h1 { font-size: 36px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+    .hero p { color: #808080; font-size: 16px; }
+
+    .posts {
+      max-width: 760px; margin: 0 auto; padding: 0 24px 80px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .post-card {
+      background: #151921; border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 12px; padding: 28px 28px; text-decoration: none;
+      transition: border-color .2s, transform .15s; display: block;
+    }
+    .post-card:hover { border-color: rgba(0,229,204,0.2); transform: translateY(-2px); }
+    .post-card h2 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .post-card p { font-size: 14px; color: #808080; line-height: 1.5; margin-bottom: 12px; }
+    .post-meta { font-size: 12px; color: #555; }
+
+    footer {
+      max-width: 960px; margin: 0 auto; padding: 32px 24px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      text-align: center; color: #555; font-size: 13px;
+    }
+    footer a { color: #00E5CC; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 16px 0; }
+      .logo span { font-size: 16px; }
+      .nav-buy { padding: 6px 12px; font-size: 11px; }
+      .hero { padding: 36px 16px 24px; }
+      .hero h1 { font-size: 26px; }
+      .posts { padding: 0 16px 48px; }
+      .post-card { padding: 20px 18px; }
+      .post-card h2 { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="https://stemslicer.com" class="logo">
+      <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="36" height="36" rx="8" fill="#151921"/>
+        <rect x="5" y="9" width="3.5" height="18" rx="1.75" fill="#00E5CC"/>
+        <rect x="11.5" y="5" width="3.5" height="26" rx="1.75" fill="#00E5CC" opacity=".7"/>
+        <rect x="18" y="11" width="3.5" height="14" rx="1.75" fill="#00E5CC" opacity=".5"/>
+        <rect x="24.5" y="7" width="3.5" height="22" rx="1.75" fill="#00E5CC" opacity=".8"/>
+        <line x1="1" y1="18" x2="35" y2="18" stroke="#FF4757" stroke-width="1.5" stroke-dasharray="3 2"/>
+      </svg>
+      <span>StemSlicer</span>
+    </a>
+    <div class="nav-right">
+      <a href="https://stemslicer.com/#buy" class="nav-buy">Buy Now — &euro;5</a>
+      <a href="mailto:eq.enrico@gmail.com" class="nav-link">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Blog</h1>
+    <p>Guides and tips for music producers and mixing engineers.</p>
+  </section>
+
+  <div class="posts">
+    <a href="strip-silence-from-stems.html" class="post-card">
+      <h2>How to Strip Silence from Stems for Mixing (2026 Guide)</h2>
+      <p>Learn the best methods to detect and remove silence from audio stems before mixing — from DAW built-in tools to cross-DAW batch solutions.</p>
+      <span class="post-meta">February 2026</span>
+    </a>
+
+    <a href="export-stems-reaper-pro-tools-logic.html" class="post-card">
+      <h2>How to Export Stems as Ready-to-Open DAW Projects</h2>
+      <p>Stop manually importing stems. Learn how to create .rpp, AAF, and .dawproject files that open directly in REAPER, Pro Tools, Logic, Cubase, Bitwig, and Studio One.</p>
+      <span class="post-meta">February 2026</span>
+    </a>
+
+    <a href="prepare-stems-for-mixing-engineer.html" class="post-card">
+      <h2>How to Prepare Stems for a Mixing Engineer: The Complete Checklist</h2>
+      <p>A practical checklist covering naming, formats, silence cleanup, and session organization — everything your mixer needs to start working immediately.</p>
+      <span class="post-meta">February 2026</span>
+    </a>
+
+    <a href="batch-process-audio-stems.html" class="post-card">
+      <h2>Batch Processing Audio Stems: Save Hours on Session Prep</h2>
+      <p>Processing 40+ stems one by one is brutal. Here's how to automate silence detection and project export for entire sessions at once.</p>
+      <span class="post-meta">February 2026</span>
+    </a>
+
+    <a href="color-coded-tracks-daw.html" class="post-card">
+      <h2>Auto Color-Coded Tracks in Your DAW: Why It Matters for Mixing</h2>
+      <p>Color-coded tracks speed up mixing and reduce mistakes. Learn how to auto-assign colors based on instrument names across different DAWs.</p>
+      <span class="post-meta">February 2026</span>
+    </a>
+  </div>
+
+  <footer>
+    <p>StemSlicer &copy; 2026 &mdash; Built for producers, by a producer.</p>
+    <p style="margin-top:8px;">Questions? <a href="mailto:eq.enrico@gmail.com">eq.enrico@gmail.com</a></p>
+  </footer>
+
+  <script data-goatcounter="https://stemslicer.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
